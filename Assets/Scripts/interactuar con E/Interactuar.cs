@@ -26,6 +26,9 @@ public class InteractableNote : MonoBehaviour
 
     void Update()
     {
+        // NO permitir interacción si el celular está activo
+        if (CelularUI.celularEstaActivo) return;
+
         if (jugadorCerca && puedeInteractuar && !textoMostrandose && Input.GetKeyDown(KeyCode.E))
         {
             StartCoroutine(MostrarTexto());
@@ -38,16 +41,10 @@ public class InteractableNote : MonoBehaviour
         textoMostrandose = true;
         indicadorE.SetActive(false);
 
-        // Selección del texto según el número de interacciones
-        string textoAMostrar = "Nada que decir...";
-        if (contadorInteracciones < textosInteractuar.Length)
-        {
-            textoAMostrar = textosInteractuar[contadorInteracciones];
-        }
-        else
-        {
-            textoAMostrar = textosInteractuar[textosInteractuar.Length - 1]; // Último texto
-        }
+        // Escoger el texto correcto
+        string textoAMostrar = (contadorInteracciones < textosInteractuar.Length)
+            ? textosInteractuar[contadorInteracciones]
+            : textosInteractuar[textosInteractuar.Length - 1];
 
         textoUI.text = textoAMostrar;
         panelTexto.SetActive(true);
@@ -59,6 +56,7 @@ public class InteractableNote : MonoBehaviour
         puedeInteractuar = true;
         contadorInteracciones++;
 
+        // Mostrar la E si el jugador sigue cerca
         if (jugadorCerca)
         {
             indicadorE.SetActive(true);
@@ -71,7 +69,7 @@ public class InteractableNote : MonoBehaviour
         {
             jugadorCerca = true;
 
-            if (puedeInteractuar && !textoMostrandose)
+            if (puedeInteractuar && !textoMostrandose && !CelularUI.celularEstaActivo)
             {
                 indicadorE.SetActive(true);
             }
