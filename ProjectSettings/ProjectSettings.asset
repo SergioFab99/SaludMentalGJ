@@ -935,12 +935,12 @@ PlayerSettings:
   qnxGraphicConfPath: 
   apiCompatibilityLevel: 6
   captureStartupLogs: {}
-  activeInputHandler: 0
+  activeInputHandler: 2
   windowsGamepadBackendHint: 0
   cloudProjectId: 214ee73a-510f-4600-b0ed-9e5e127b6a98
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
+  projectName: Game Jam Salud mental
   organizationId: zhergyo
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
