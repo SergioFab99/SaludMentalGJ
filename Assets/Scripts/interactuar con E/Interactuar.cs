@@ -5,49 +5,59 @@ using System.Collections.Generic;
 
 public class InteractableNote : MonoBehaviour
 {
-    public GameObject dialogPanel;    // El panel del dialogo (canvas)
-    public Text dialogText;           // El texto dentro del panel
-    [TextArea(3, 10)]
-    public string noteText;           // Texto que se mostrará
+    public GameObject indicadorE;       // UI que dice "Presiona E"
+    public GameObject panelTexto;       // UI del texto que se muestra al interactuar
+    public float tiempoMostrarTexto = 2f;
 
-    private bool playerInRange = false;
-    private bool isDialogOpen = false;
+    private bool jugadorCerca = false;
+    private bool puedeInteractuar = true;
+    private bool textoMostrandose = false;
+
+    void Start()
+    {
+        indicadorE.SetActive(false);
+        panelTexto.SetActive(false);
+    }
 
     void Update()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        if (jugadorCerca && puedeInteractuar && !textoMostrandose && Input.GetKeyDown(KeyCode.E))
         {
-            if (!isDialogOpen)
-            {
-                OpenDialog();
-            }
-            else
-            {
-                CloseDialog();
-            }
+            StartCoroutine(MostrarTexto());
         }
     }
 
-    private void OpenDialog()
+    private System.Collections.IEnumerator MostrarTexto()
     {
-        dialogPanel.SetActive(true);
-        dialogText.text = noteText;
-        isDialogOpen = true;
+        puedeInteractuar = false;
+        textoMostrandose = true;
+        indicadorE.SetActive(false);
+        panelTexto.SetActive(true);
+
+        yield return new WaitForSeconds(tiempoMostrarTexto);
+
+        panelTexto.SetActive(false);
+        textoMostrandose = false;
+        puedeInteractuar = true;
+
+        // Si el jugador aún está cerca, vuelve a aparecer la E
+        if (jugadorCerca)
+        {
+            indicadorE.SetActive(true);
+        }
     }
 
-    private void CloseDialog()
-    {
-        dialogPanel.SetActive(false);
-        isDialogOpen = false;
-    }
-
-    // Detectar si el jugador está cerca usando trigger (colisionador con isTrigger)
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            playerInRange = true;
-            // Opcional: mostrar un indicador en pantalla "Presiona E para leer"
+            jugadorCerca = true;
+
+            // Solo mostrar la E si se puede interactuar y no hay texto mostrándose
+            if (puedeInteractuar && !textoMostrandose)
+            {
+                indicadorE.SetActive(true);
+            }
         }
     }
 
@@ -55,9 +65,8 @@ public class InteractableNote : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playerInRange = false;
-            // cerrar diálogo si el jugador se aleja
-            CloseDialog();
+            jugadorCerca = false;
+            indicadorE.SetActive(false);
         }
     }
 }
