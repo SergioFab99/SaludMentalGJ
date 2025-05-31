@@ -5,7 +5,9 @@ public class MovimientoPesado : MonoBehaviour
     public float velocidad = 5f;
     public float sensibilidadMouse = 2f;
     public Transform camaraJugador;
-    public PensamientosTristes pensamientosTristes; // Asegúrate de arrastrar el componente en el Inspector
+    public PensamientosTristes pensamientosTristes; // AsegÃºrate de arrastrar el componente en el Inspector
+
+    public AudioSource audioPasos; // AudioSource para sonidos de pasos
 
     private CharacterController controlador;
     private float rotacionX = 0f;
@@ -18,11 +20,16 @@ public class MovimientoPesado : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        if (audioPasos != null)
+        {
+            audioPasos.loop = true; // Para que el sonido se repita mientras caminas
+        }
     }
 
     void Update()
     {
-        // Cámara con el mouse
+        // CÃ¡mara con el mouse
         float mouseX = Input.GetAxis("Mouse X") * sensibilidadMouse;
         float mouseY = Input.GetAxis("Mouse Y") * sensibilidadMouse;
 
@@ -45,12 +52,26 @@ public class MovimientoPesado : MonoBehaviour
                 primerIntento = false;
                 if (pensamientosTristes != null)
                 {
-                    pensamientosTristes.MostrarPensamiento("¿Realmente tengo que moverme?");
+                    pensamientosTristes.MostrarPensamiento("Â¿Realmente tengo que moverme?");
                 }
                 return; // Bloquea movimiento la primera vez
             }
 
             controlador.Move(direccion * velocidad * Time.deltaTime);
+
+            // Reproducir sonido pasos si no estÃ¡ sonando
+            if (audioPasos != null && !audioPasos.isPlaying)
+            {
+                audioPasos.Play();
+            }
+        }
+        else
+        {
+            // Detener sonido pasos cuando no hay movimiento
+            if (audioPasos != null && audioPasos.isPlaying)
+            {
+                audioPasos.Stop();
+            }
         }
     }
 }
