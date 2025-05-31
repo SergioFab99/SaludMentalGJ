@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5b332827eba48a649a46ddebe122e474
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 310387
+  packageName: Universal First Person Player Controller
+  packageVersion: 1.0.0
+  assetPath: Assets/UFPPC/Demo_HDRP.unity
+  uploadId: 732425

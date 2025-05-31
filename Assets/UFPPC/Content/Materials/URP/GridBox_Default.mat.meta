@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8eef9be42b1d3ce4a8ebc97e0fd844d0
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 310387
+  packageName: Universal First Person Player Controller
+  packageVersion: 1.0.0
+  assetPath: Assets/UFPPC/Content/Materials/URP/GridBox_Default.mat
+  uploadId: 732425

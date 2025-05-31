@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5be01e5f064da774d929e6142d762d9b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 310387
+  packageName: Universal First Person Player Controller
+  packageVersion: 1.0.0
+  assetPath: Assets/UFPPC/Content/Models/Environment_HDRP.prefab
+  uploadId: 732425
