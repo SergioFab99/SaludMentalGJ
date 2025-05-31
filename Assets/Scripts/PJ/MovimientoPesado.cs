@@ -67,7 +67,11 @@ public class MovimientoPesado : MonoBehaviour
         }
         else
         {
-            // Detener sonido pasos cuando no hay movimiento
+            // Detener sonido pasos cuando no hay movimiento  y tambien si se abre el panel de pensamientos
+            if (pensamientosTristes != null && pensamientosTristes.PensamientoMostrandose)
+            {
+                return; // No detener sonido si se está mostrando un pensamiento
+            }
             if (audioPasos != null && audioPasos.isPlaying)
             {
                 audioPasos.Stop();
