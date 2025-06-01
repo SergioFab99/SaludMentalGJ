@@ -5,8 +5,6 @@ public class MovimientoPesado : MonoBehaviour
     public float velocidad = 5f;
     public float sensibilidadMouse = 2f;
     public Transform camaraJugador;
-    public PensamientosTristes pensamientosTristes;
-    public AudioSource audioPasos;
 
     private CharacterController controlador;
     private float rotacionX = 0f;
@@ -20,11 +18,6 @@ public class MovimientoPesado : MonoBehaviour
         if (cinemáticaActiva) return;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        if (audioPasos != null)
-        {
-            audioPasos.loop = true;
-        }
     }
 
     void Update()
@@ -39,9 +32,6 @@ public class MovimientoPesado : MonoBehaviour
 
             camaraJugador.localRotation = Quaternion.Euler(rotacionX, 0f, 0f);
             transform.Rotate(Vector3.up * mouseX);
-
-            if (audioPasos != null && audioPasos.isPlaying)
-                audioPasos.Stop();
             return;
         }
 
@@ -75,37 +65,6 @@ public class MovimientoPesado : MonoBehaviour
 
         direccion.y = velocidadVertical;
 
-        // Check if player is interacting or canvas is shown
-        bool isInteracting = Input.GetKey(KeyCode.E) || (pensamientosTristes != null && pensamientosTristes.PensamientoMostrandose);
-
-        if (movX != 0f || movZ != 0f)
-        {
-            if (!isInteracting)
-            {
-                controlador.Move(direccion * Time.deltaTime);
-
-                // Play footsteps only if moving and not interacting
-                if (audioPasos != null && !audioPasos.isPlaying)
-                {
-                    audioPasos.Play();
-                }
-            }
-            else
-            {
-                // Stop footsteps during interaction or canvas display
-                if (audioPasos != null && audioPasos.isPlaying)
-                {
-                    audioPasos.Stop();
-                }
-            }
-        }
-        else
-        {
-            // Stop footsteps when not moving
-            if (audioPasos != null && audioPasos.isPlaying)
-            {
-                audioPasos.Stop();
-            }
-        }
+        controlador.Move(direccion * Time.deltaTime);
     }
 }

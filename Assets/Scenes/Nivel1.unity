@@ -6355,8 +6355,6 @@ MonoBehaviour:
   velocidad: 2
   sensibilidadMouse: 2
   camaraJugador: {fileID: 1880221424}
-  pensamientosTristes: {fileID: 844604240}
-  audioPasos: {fileID: 314495732}
   gravedad: -9.81
 --- !u!114 &844604242
 MonoBehaviour:
@@ -6430,8 +6428,15 @@ MonoBehaviour:
   - {fileID: 1485804845}
   - {fileID: 313409668}
   - {fileID: 1549455338}
+  miniCelular: {fileID: 1971895831}
+  sombraCelular: {fileID: 1499240653}
+  nombreSiguienteEscena: SiguienteEscena
+  indiceSiguienteEscena: -1
   duracionParpadeo: 5
   intervaloParpadeo: 0.2
+  duracionVibracion: 1
+  intensidadVibracion: 10
+  frecuenciaVibracion: 0.05
 --- !u!1 &845700260 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3778358514833960000, guid: b557d21df1eb8ff4abf044f532b51a57,
@@ -10406,7 +10411,7 @@ GameObject:
   - component: {fileID: 1499240656}
   - component: {fileID: 1499240655}
   m_Layer: 5
-  m_Name: MiniCelular (1)
+  m_Name: Sombra de minicelular
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
