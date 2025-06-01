@@ -4,111 +4,35 @@ using UnityEngine.UI;
 
 public class InteractableNoteConOpciones : MonoBehaviour
 {
-    public PensamientosTristes pensamientos;
-    public GameObject indicadorE; // Indicador "Presiona E"
-    public GameObject panelOpciones;
-    public Button botonPositivo;
-    public Button botonNegativo;
 
-    public TextMeshProUGUI textoBotonPositivo;
-    public TextMeshProUGUI textoBotonNegativo;
-
-    [TextArea]
-    public string textoPositivo;
-
-    [TextArea]
-    public string textoNegativo;
-
-    [TextArea]
-    public string respuestaPositiva = "Elegiste algo positivo. ¡Mejoraste tu ánimo!";
-
-    [TextArea]
-    public string respuestaNegativa = "Elegiste algo negativo. Tu ánimo bajó.";
-
+    public GameObject letraE_UI;
+    public GameObject canvasOpciones;
     public EmotionalBar barraEmocional;
-
+    public bool opcionElegida = false;
     private bool jugadorCerca = false;
-    private bool opcionesAbiertas = false;
-    private bool yaInteractuo = false;
-    public bool YaInteractuo()
-{
-    return yaInteractuo;
-}
-    private void Start()
+
+    void Start()
     {
-        if (panelOpciones != null)
-            panelOpciones.SetActive(false);
-
-        // Suscribimos solo una vez a los botones
-        botonPositivo.onClick.RemoveAllListeners();
-        botonNegativo.onClick.RemoveAllListeners();
-
-        botonPositivo.onClick.AddListener(() => OnOpcionElegida(true));
-        botonNegativo.onClick.AddListener(() => OnOpcionElegida(false));
-
-        indicadorE.SetActive(false); // Asegurarse que no esté visible al inicio
+        letraE_UI.SetActive(false);
+        canvasOpciones.SetActive(false);
+        BloquearCursor(); // ? Asegúrate que al iniciar, el mouse esté bloqueado
     }
 
-    private void Update()
+    void Update()
     {
-        // Bloquear tecla C si el panel está abierto
-        if (opcionesAbiertas && Input.GetKeyDown(KeyCode.C))
+        if (jugadorCerca && Input.GetKeyDown(KeyCode.E))
         {
-            // No hacer nada
-            return;
+            canvasOpciones.SetActive(true);
+            letraE_UI.SetActive(false);
+            LiberarCursor(); // ? Mostrar cursor cuando abres el menú
         }
-
-        // Mostrar indicador E solo si el jugador está cerca y no está interactuando
-        if (jugadorCerca && !CelularUI.celularEstaActivo && !pensamientos.PensamientoMostrandose && !opcionesAbiertas && !yaInteractuo)
-        {
-            if (!indicadorE.activeSelf)
-                indicadorE.SetActive(true);
-
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                textoBotonPositivo.text = textoPositivo;
-                textoBotonNegativo.text = textoNegativo;
-
-                panelOpciones.SetActive(true);
-                indicadorE.SetActive(false);
-                opcionesAbiertas = true;
-
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-        }
-        else
-        {
-            if (indicadorE.activeSelf)
-                indicadorE.SetActive(false);
-        }
-    }
-
-    private void OnOpcionElegida(bool positiva)
-    {
-        if (positiva)
-        {
-            barraEmocional.ModifyEmotion(14);
-            pensamientos.MostrarPensamiento(respuestaPositiva);
-        }
-        else
-        {
-            barraEmocional.ModifyEmotion(-20);
-            pensamientos.MostrarPensamiento(respuestaNegativa);
-        }
-
-        panelOpciones.SetActive(false);
-        opcionesAbiertas = false;
-        yaInteractuo = true;  // Marca que ya interactuó con este objeto
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !yaInteractuo)
+        if (other.CompareTag("Player"))
         {
+            letraE_UI.SetActive(true);
             jugadorCerca = true;
         }
     }
@@ -117,16 +41,38 @@ public class InteractableNoteConOpciones : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            letraE_UI.SetActive(false);
+            canvasOpciones.SetActive(false);
             jugadorCerca = false;
-            indicadorE.SetActive(false);
-
-            if (panelOpciones != null)
-                panelOpciones.SetActive(false);
-
-            opcionesAbiertas = false;
-
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            BloquearCursor(); // ? Vuelve a bloquear si se aleja
         }
+    }
+
+    public void BotonOpcion1()
+    {
+        opcionElegida = true;
+        barraEmocional.ModifyEmotion(14);
+        canvasOpciones.SetActive(false);
+        BloquearCursor(); // ? Oculta mouse luego de elegir
+    }
+
+    public void BotonOpcion2()
+    {
+        opcionElegida = true;
+        barraEmocional.ModifyEmotion(-20);
+        canvasOpciones.SetActive(false);
+        BloquearCursor(); // ? Oculta mouse luego de elegir
+    }
+
+    void LiberarCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    void BloquearCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 }
