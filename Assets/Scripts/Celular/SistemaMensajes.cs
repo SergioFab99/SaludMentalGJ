@@ -252,22 +252,26 @@ public class SistemaMensajes : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (sombraCelular != null)
             sombraCelular.transform.position = posicionInicialSombra;
     }
-    IEnumerator EsperarYVibrarYMostrarNotificacion(float segundos)
+       IEnumerator EsperarYVibrarYMostrarNotificacion(float segundos)
     {
         yield return new WaitForSeconds(segundos);
 
+        // Vibrar el celular (usa la función de vibración y espera a que termine)
         yield return VibrarCelular(() =>
         {
-            if (audioSource != null && sonidoNotificacion != null)
-                audioSource.PlayOneShot(sonidoNotificacion);
-
+            // Al completar la vibración, mostrar los íconos de notificación
             if (iconoNotificacionCelular != null)
                 iconoNotificacionCelular.SetActive(true);
+
             if (iconoNotificacionMiniCelular != null)
                 iconoNotificacionMiniCelular.SetActive(true);
 
-            // ✅ Activar las opciones al final
-            StartCoroutine(EsperarYActivarOpciones(0f));
+            // Reproducir el sonido de notificación
+            if (audioSource != null && sonidoNotificacion != null)
+                audioSource.PlayOneShot(sonidoNotificacion);
+
+            // Iniciar la espera para habilitar las opciones del mensaje
+            StartCoroutine(EsperarYActivarOpciones(2f));
         });
     }
 }
