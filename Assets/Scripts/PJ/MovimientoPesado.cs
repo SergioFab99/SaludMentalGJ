@@ -5,18 +5,15 @@ public class MovimientoPesado : MonoBehaviour
     public float velocidad = 5f;
     public float sensibilidadMouse = 2f;
     public Transform camaraJugador;
-    public PensamientosTristes pensamientosTristes; // Asegúrate de arrastrar el componente en el Inspector
-
-    public AudioSource audioPasos; // AudioSource para sonidos de pasos
+    public PensamientosTristes pensamientosTristes;
+    public AudioSource audioPasos;
 
     private CharacterController controlador;
     private float rotacionX = 0f;
-
-    private bool primerIntento = true;
-
     private float velocidadVertical = 0f;
     public float gravedad = -9.81f;
     public static bool cinemáticaActiva = false;
+
     void Start()
     {
         controlador = GetComponent<CharacterController>();
@@ -26,7 +23,7 @@ public class MovimientoPesado : MonoBehaviour
 
         if (audioPasos != null)
         {
-            audioPasos.loop = true; // Para que el sonido se repita mientras caminas
+            audioPasos.loop = true;
         }
     }
 
@@ -34,7 +31,6 @@ public class MovimientoPesado : MonoBehaviour
     {
         if (cinemáticaActiva)
         {
-            // Sensibilidad mucho menor para cámara
             float mouseX = Input.GetAxis("Mouse X") * (sensibilidadMouse * 0.1f);
             float mouseY = Input.GetAxis("Mouse Y") * (sensibilidadMouse * 0.1f);
 
@@ -44,16 +40,12 @@ public class MovimientoPesado : MonoBehaviour
             camaraJugador.localRotation = Quaternion.Euler(rotacionX, 0f, 0f);
             transform.Rotate(Vector3.up * mouseX);
 
-            // Bloquear movimiento y detener sonidos pasos
             if (audioPasos != null && audioPasos.isPlaying)
                 audioPasos.Stop();
-
-            // Bloquear movimiento
             return;
         }
 
-        // Código normal para mover y rotar con sensibilidad normal
-        // Cámara con el mouse
+        // Camera rotation
         float mouseXNormal = Input.GetAxis("Mouse X") * sensibilidadMouse;
         float mouseYNormal = Input.GetAxis("Mouse Y") * sensibilidadMouse;
 
@@ -63,18 +55,18 @@ public class MovimientoPesado : MonoBehaviour
         camaraJugador.localRotation = Quaternion.Euler(rotacionX, 0f, 0f);
         transform.Rotate(Vector3.up * mouseXNormal);
 
-        // Movimiento con WASD
+        // Movement
         float movX = Input.GetAxis("Horizontal");
         float movZ = Input.GetAxis("Vertical");
 
         Vector3 direccion = transform.right * movX + transform.forward * movZ;
         direccion *= velocidad;
 
-        // Aplicar gravedad
+        // Gravity
         if (controlador.isGrounded)
         {
             if (velocidadVertical < 0)
-                velocidadVertical = -2f; // Mantener al personaje pegado al suelo
+                velocidadVertical = -2f;
         }
         else
         {
@@ -83,25 +75,33 @@ public class MovimientoPesado : MonoBehaviour
 
         direccion.y = velocidadVertical;
 
+        // Check if player is interacting or canvas is shown
+        bool isInteracting = Input.GetKey(KeyCode.E) || (pensamientosTristes != null && pensamientosTristes.PensamientoMostrandose);
+
         if (movX != 0f || movZ != 0f)
         {
-           
-
-            controlador.Move(direccion * Time.deltaTime);
-
-            // Reproducir sonido pasos si no está sonando
-            if (audioPasos != null && !audioPasos.isPlaying)
+            if (!isInteracting)
             {
-                audioPasos.Play();
+                controlador.Move(direccion * Time.deltaTime);
+
+                // Play footsteps only if moving and not interacting
+                if (audioPasos != null && !audioPasos.isPlaying)
+                {
+                    audioPasos.Play();
+                }
+            }
+            else
+            {
+                // Stop footsteps during interaction or canvas display
+                if (audioPasos != null && audioPasos.isPlaying)
+                {
+                    audioPasos.Stop();
+                }
             }
         }
         else
         {
-            // Detener sonido pasos cuando no hay movimiento y también si se abre el panel de pensamientos
-            if (pensamientosTristes != null && pensamientosTristes.PensamientoMostrandose)
-            {
-                return; // No detener sonido si se está mostrando un pensamiento
-            }
+            // Stop footsteps when not moving
             if (audioPasos != null && audioPasos.isPlaying)
             {
                 audioPasos.Stop();
@@ -109,4 +109,3 @@ public class MovimientoPesado : MonoBehaviour
         }
     }
 }
-    
