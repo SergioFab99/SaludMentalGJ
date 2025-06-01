@@ -8,6 +8,7 @@ public class CelularUI : MonoBehaviour
 
     public GameObject canvasMarco;          // Marco del celular (siempre al frente)
     public GameObject[] otrosCanvas;        // Otros canvas que se deben ocultar al abrir el celular
+    public GameObject imagenFondoOscuro;    // Imagen negra detrás del celular pequeño
 
     public GameObject player;               // Objeto del jugador
     public MonoBehaviour movimientoJugador; // Script de movimiento (FPS)
@@ -21,6 +22,7 @@ public class CelularUI : MonoBehaviour
         celularGrande.SetActive(false);
         celularPequeño.SetActive(true);
         if (canvasMarco != null) canvasMarco.SetActive(false);
+        if (imagenFondoOscuro != null) imagenFondoOscuro.SetActive(true); // Fondo solo detrás del celular chico
 
         foreach (GameObject pestaña in pestañas)
         {
@@ -46,9 +48,10 @@ public class CelularUI : MonoBehaviour
 
         celularGrande.SetActive(celularActivo);
         celularPequeño.SetActive(!celularActivo);
-        if (canvasMarco != null) canvasMarco.SetActive(celularActivo);
 
-        // Desactivar otros Canvas
+        if (canvasMarco != null) canvasMarco.SetActive(celularActivo);
+        if (imagenFondoOscuro != null) imagenFondoOscuro.SetActive(!celularActivo); // Solo aparece con el celular chico
+
         foreach (GameObject c in otrosCanvas)
         {
             if (c != null) c.SetActive(!celularActivo);
