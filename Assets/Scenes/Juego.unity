@@ -5893,7 +5893,6 @@ GameObject:
   - component: {fileID: 844604235}
   - component: {fileID: 844604234}
   - component: {fileID: 844604233}
-  - component: {fileID: 844604232}
   - component: {fileID: 844604241}
   - component: {fileID: 844604237}
   - component: {fileID: 844604238}
@@ -5908,21 +5907,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &844604232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 844604231}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd7ea84f0dc76174894a5283e35468fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  velocidad: 5
-  sensibilidadMouse: 3
-  camaraJugador: {fileID: 1880221424}
 --- !u!136 &844604233
 CapsuleCollider:
   m_ObjectHideFlags: 0
