@@ -6,61 +6,73 @@ using System.Collections;
 public class SistemaMensajes : MonoBehaviour
 {
     [Header("Referencias")]
-    public GameObject celularPequeño;               // El icono del celular (puede tener Image)
-    public RectTransform fondoCelularPequeño;       // Imagen negra que vibra
-    public GameObject alertaNotificacion;           // Icono o imagen de alerta
-    public Image imagenCelular;                      // Componente Image del celular para cambiar sprite
+    public GameObject panelOpciones;
+    public GameObject celular;
+    public GameObject canvasTransicion; // Canvas negro para parpadeo
+    public GameObject personaje;
+    public GameObject textoDialogo; // Texto que se desactiva en la transición
 
-    [Header("Configuración")]
-    public float intensidadVibracion = 5f;
+    public Transform[] puntosFlashback; // Puntos donde el personaje aparecerá
+    public float duracionParpadeo = 5f;
+    public float intervaloParpadeo = 0.2f;
 
-    private bool notificacionActiva = false;
+    private bool accionEjecutada = false;
+    private Quaternion rotacionCamaraOriginal;
 
-    // Método para simular llegada de mensaje, solo cambia el sprite del celular
-    public void LlegoMensaje(Sprite nuevoSprite)
+    public void OpcionSeleccionada()
     {
-        if (imagenCelular != null)
-        {
-            imagenCelular.sprite = nuevoSprite;
-        }
+        if (accionEjecutada) return;
+        accionEjecutada = true;
 
-        // Vibrar el celular para avisar
-        StartCoroutine(VibrarCelular());
+        panelOpciones.SetActive(false);
+        celular.SetActive(false);
 
-        // Activar la notificación visual
-        alertaNotificacion.SetActive(true);
-        notificacionActiva = true;
+        StartCoroutine(FlashbackConParpadeo());
     }
 
-    IEnumerator VibrarCelular(float duracion = 0.3f)
+    IEnumerator FlashbackConParpadeo()
     {
-        Vector3 posOriginalFondo = fondoCelularPequeño.localPosition;
-        Vector3 posOriginalCelular = celularPequeño.transform.localPosition;
-        float tiempo = 0f;
+        float tiempoTranscurrido = 0f;
+        int indicePosicion = 0;
 
-        while (tiempo < duracion)
+        // Guardar rotación original de la cámara
+        Camera camara = Camera.main;
+        if (camara != null)
+            rotacionCamaraOriginal = camara.transform.rotation;
+
+        // Desactivar texto si está activo
+        if (textoDialogo != null)
+            textoDialogo.SetActive(false);
+
+        // Asegurar que el canvas esté activo para iniciar
+        canvasTransicion.SetActive(true);
+
+        while (tiempoTranscurrido < duracionParpadeo)
         {
-            float x = Random.Range(-intensidadVibracion, intensidadVibracion);
-            float y = Random.Range(-intensidadVibracion, intensidadVibracion);
-            Vector3 offset = new Vector3(x, y, 0);
+            // Fijar rotación de la cámara hacia adelante
+            if (camara != null)
+                camara.transform.rotation = rotacionCamaraOriginal;
 
-            fondoCelularPequeño.localPosition = posOriginalFondo + offset;
-            celularPequeño.transform.localPosition = posOriginalCelular + offset;
+            // Alternar visibilidad para parpadeo
+            canvasTransicion.SetActive(!canvasTransicion.activeSelf);
 
-            tiempo += Time.deltaTime;
-            yield return null;
+            // Mover al personaje si el canvas está activo
+            if (canvasTransicion.activeSelf && puntosFlashback.Length > 0)
+            {
+                personaje.transform.position = puntosFlashback[indicePosicion].position;
+                indicePosicion = (indicePosicion + 1) % puntosFlashback.Length;
+            }
+
+            yield return new WaitForSeconds(intervaloParpadeo);
+            tiempoTranscurrido += intervaloParpadeo;
         }
 
-        fondoCelularPequeño.localPosition = posOriginalFondo;
-        celularPequeño.transform.localPosition = posOriginalCelular;
-    }
+        // Al final, asegurar que el canvas quede activo
+        canvasTransicion.SetActive(true);
 
-    public void JugadorAbrioCelular()
-    {
-        if (notificacionActiva)
-        {
-            alertaNotificacion.SetActive(false);
-            notificacionActiva = false;
-        }
+        // Si quieres volver a activar el texto o continuar historia, hazlo aquí
+        // textoDialogo.SetActive(true); (si lo deseas más adelante)
+
+        accionEjecutada = false;
     }
 }

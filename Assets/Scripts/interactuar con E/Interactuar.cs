@@ -10,7 +10,6 @@ public class InteractableNote : MonoBehaviour
     public string[] pensamientosPosibles;
     public PensamientosTristes pensamientos;
     public GameObject indicadorE;
-    public Transform jugadorTransform; // referencia al jugador
     private bool jugadorCerca = false;
 
     private void Update()
@@ -34,18 +33,6 @@ public class InteractableNote : MonoBehaviour
                 string pensamientoRandom = pensamientosPosibles[Random.Range(0, pensamientosPosibles.Length)];
                 pensamientos.MostrarPensamiento(pensamientoRandom);
                 indicadorE.SetActive(false);
-            }
-        }
-
-        // Hacer que el indicador mire al jugador siempre que esté activo
-        if (jugadorCerca && indicadorE.activeSelf)
-        {
-            Vector3 direccion = jugadorTransform.position - indicadorE.transform.position;
-            direccion.y = 0; // Solo rotar en Y para que no se incline
-
-            if (direccion != Vector3.zero)
-            {
-                indicadorE.transform.rotation = Quaternion.LookRotation(direccion);
             }
         }
     }
