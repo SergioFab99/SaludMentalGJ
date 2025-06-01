@@ -16,7 +16,7 @@ public class CelularUI : MonoBehaviour
 
     private bool celularActivo = false;
     public static bool celularEstaActivo = false;
-
+  
     void Start()
     {
         celularGrande.SetActive(false);
@@ -40,7 +40,6 @@ public class CelularUI : MonoBehaviour
             AlternarCelular();
         }
     }
-
     public void AlternarCelular()
     {
         celularActivo = !celularActivo;

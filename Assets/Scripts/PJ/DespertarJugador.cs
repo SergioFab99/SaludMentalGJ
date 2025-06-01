@@ -127,8 +127,12 @@ public class DespertarInteractivo : MonoBehaviour
         {
             pensamientosTristes.MostrarPensamiento(textoPensamientoDespertar);
         }
-    }
 
+        // ? Aquí se desactiva para siempre
+        if (canvasDespertar != null)
+            canvasDespertar.SetActive(false);
+
+    }
     public IEnumerator OpenEyes()
     {
         while (Vector2.Distance(topLid.anchoredPosition, topOpenPos) > 0.5f)

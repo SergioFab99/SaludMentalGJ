@@ -20,7 +20,10 @@ public class MenuButtons : MonoBehaviour
     {
         SceneManager.LoadScene("Menu");
     }
-
+    public void creditos()
+    {
+        SceneManager.LoadScene("Creditos");
+    }
     public void Salir()
     {
         // Esto funciona solo en compilaciones, no en editor

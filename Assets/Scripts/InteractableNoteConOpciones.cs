@@ -15,22 +15,23 @@ public class InteractableNoteConOpciones : MonoBehaviour
     {
         letraE_UI.SetActive(false);
         canvasOpciones.SetActive(false);
-        BloquearCursor(); // ? Asegúrate que al iniciar, el mouse esté bloqueado
+        BloquearCursor();
     }
 
     void Update()
     {
-        if (jugadorCerca && Input.GetKeyDown(KeyCode.E))
+        // Si ya se eligió una opción, NO permitir volver a interactuar
+        if (jugadorCerca && !opcionElegida && Input.GetKeyDown(KeyCode.E))
         {
             canvasOpciones.SetActive(true);
             letraE_UI.SetActive(false);
-            LiberarCursor(); // ? Mostrar cursor cuando abres el menú
+            LiberarCursor();
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !opcionElegida)
         {
             letraE_UI.SetActive(true);
             jugadorCerca = true;
@@ -44,16 +45,16 @@ public class InteractableNoteConOpciones : MonoBehaviour
             letraE_UI.SetActive(false);
             canvasOpciones.SetActive(false);
             jugadorCerca = false;
-            BloquearCursor(); // ? Vuelve a bloquear si se aleja
+            BloquearCursor();
         }
     }
 
     public void BotonOpcion1()
     {
         opcionElegida = true;
-        barraEmocional.ModifyEmotion(14);
+        barraEmocional.ModifyEmotion(18);
         canvasOpciones.SetActive(false);
-        BloquearCursor(); // ? Oculta mouse luego de elegir
+        BloquearCursor();
     }
 
     public void BotonOpcion2()
@@ -61,7 +62,7 @@ public class InteractableNoteConOpciones : MonoBehaviour
         opcionElegida = true;
         barraEmocional.ModifyEmotion(-20);
         canvasOpciones.SetActive(false);
-        BloquearCursor(); // ? Oculta mouse luego de elegir
+        BloquearCursor();
     }
 
     void LiberarCursor()

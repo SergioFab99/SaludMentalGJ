@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
-
+using UnityEngine.SceneManagement;
 public class SecuenciaMadre : MonoBehaviour
 {
     [Header("UI y Componentes")]
@@ -111,5 +111,7 @@ public class SecuenciaMadre : MonoBehaviour
             yield return null;
         }
         canvasGroup.alpha = fin;
+        yield return new WaitForSeconds(2f); // Espera 2 segundos antes de cambiar de escena
+        SceneManager.LoadScene("Nivel3");
     }
 }
