@@ -1065,7 +1065,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 173341581}
         m_TargetAssemblyTypeName: MenuButtons, Assembly-CSharp
-        m_MethodName: Opciones
+        m_MethodName: VolverMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
