@@ -26,6 +26,11 @@ public class DespertarInteractivo : MonoBehaviour
     private Vector2 topOpenPos;
     private Vector2 bottomOpenPos;
 
+    [Header("Texto modificable")]
+    [TextArea]
+    public string textoPensamientoDespertar = "¿Por qué me levanté? ¿Qué sentido tiene...?";
+
+
     void Start()
     {
         // Desactiva el canvas de despertar al inicio
@@ -120,7 +125,7 @@ public class DespertarInteractivo : MonoBehaviour
 
         if (pensamientosTristes != null)
         {
-            pensamientosTristes.MostrarPensamiento("¿Por qué me levanté? ¿Qué sentido tiene...?");
+            pensamientosTristes.MostrarPensamiento(textoPensamientoDespertar);
         }
     }
 
