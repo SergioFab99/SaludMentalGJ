@@ -12,6 +12,14 @@ public class MenuButtons : MonoBehaviour
     {
         SceneManager.LoadScene("Opciones");
     }
+    public void Creditos()
+    {
+        SceneManager.LoadScene("Creditos");
+    }
+    public void VolverMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
 
     public void Salir()
     {
