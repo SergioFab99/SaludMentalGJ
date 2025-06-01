@@ -5,12 +5,12 @@ public class MenuButtons : MonoBehaviour
 {
     public void EmpezarJuego()
     {
-        SceneManager.LoadScene("Juego");
+        SceneManager.LoadScene("Nivel1");
     }
 
     public void Opciones()
     {
-        SceneManager.LoadScene("Opciones");
+        SceneManager.LoadScene("Tutorial");
     }
     public void Creditos()
     {
