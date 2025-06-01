@@ -2,74 +2,32 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
-using System.Collections.Generic;
 
 public class SistemaMensajes : MonoBehaviour
 {
     [Header("Referencias")]
-    public GameObject celularPequeño;               // El icono del celular
+    public GameObject celularPequeño;               // El icono del celular (puede tener Image)
     public RectTransform fondoCelularPequeño;       // Imagen negra que vibra
     public GameObject alertaNotificacion;           // Icono o imagen de alerta
-    public Transform contenedorMensajes;            // Donde se colocan los mensajes
-    public GameObject mensajePrefab;                // Prefab con TextMeshProUGUI
+    public Image imagenCelular;                      // Componente Image del celular para cambiar sprite
 
     [Header("Configuración")]
     public float intensidadVibracion = 5f;
-    public int maxMensajes = 5;
-
-    [Header("Mensajes Programados")]
-    public List<MensajeProgramado> mensajesProgramados = new List<MensajeProgramado>();
 
     private bool notificacionActiva = false;
 
-    [System.Serializable]
-    public class MensajeProgramado
+    // Método para simular llegada de mensaje, solo cambia el sprite del celular
+    public void LlegoMensaje(Sprite nuevoSprite)
     {
-        public string contenido;
-        public float tiempoDeLlegada; // En segundos
-    }
-
-    void Start()
-    {
-        alertaNotificacion.SetActive(false);
-
-        // Iniciar cada mensaje programado
-        foreach (MensajeProgramado mensaje in mensajesProgramados)
+        if (imagenCelular != null)
         {
-            StartCoroutine(EnviarMensajeEnTiempo(mensaje));
+            imagenCelular.sprite = nuevoSprite;
         }
-    }
 
-    IEnumerator EnviarMensajeEnTiempo(MensajeProgramado mensaje)
-    {
-        yield return new WaitForSeconds(mensaje.tiempoDeLlegada);
-        LlegoMensaje(mensaje.contenido);
-    }
-
-    public void LlegoMensaje(string contenido)
-    {
-        // Vibración
+        // Vibrar el celular para avisar
         StartCoroutine(VibrarCelular());
 
-        // Crear nuevo mensaje
-        GameObject nuevo = Instantiate(mensajePrefab, contenedorMensajes);
-        TextMeshProUGUI texto = nuevo.GetComponentInChildren<TextMeshProUGUI>();
-        if (texto != null)
-        {
-            texto.text = contenido;
-        }
-        else
-        {
-            Debug.LogWarning("El prefab de mensaje no tiene un TextMeshProUGUI.");
-        }
-
-        // Eliminar el mensaje más antiguo si se excede el máximo
-        if (contenedorMensajes.childCount > maxMensajes)
-        {
-            Destroy(contenedorMensajes.GetChild(0).gameObject);
-        }
-
-        // Activar notificación
+        // Activar la notificación visual
         alertaNotificacion.SetActive(true);
         notificacionActiva = true;
     }
