@@ -2854,7 +2854,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 313409664}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -6991,8 +6991,6 @@ MonoBehaviour:
   velocidad: 2
   sensibilidadMouse: 2
   camaraJugador: {fileID: 1880221424}
-  pensamientosTristes: {fileID: 844604240}
-  audioPasos: {fileID: 314495732}
   gravedad: -9.81
 --- !u!114 &844604242
 MonoBehaviour:
@@ -7066,8 +7064,15 @@ MonoBehaviour:
   - {fileID: 1485804845}
   - {fileID: 313409668}
   - {fileID: 1549455338}
+  miniCelular: {fileID: 0}
+  sombraCelular: {fileID: 0}
+  nombreSiguienteEscena: SiguienteEscena
+  indiceSiguienteEscena: -1
   duracionParpadeo: 5
   intervaloParpadeo: 0.2
+  duracionVibracion: 1
+  intensidadVibracion: 10
+  frecuenciaVibracion: 0.05
 --- !u!114 &844604244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10945,7 +10950,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1485804841}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -11628,7 +11633,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1549455334}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

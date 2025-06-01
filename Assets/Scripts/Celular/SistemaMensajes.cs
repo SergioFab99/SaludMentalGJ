@@ -38,6 +38,12 @@ public class SistemaMensajes : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private Vector3 posicionInicialSombra;
     private bool estaArrastrando = false;
     private Camera camaraUI;
+    [Header("Notificaciones")]
+    public GameObject iconoNotificacionCelular;
+    public GameObject iconoNotificacionMiniCelular;
+    [Header("Sonido de notificación")]
+    public AudioSource audioSource;
+    public AudioClip sonidoNotificacion;
 
     void Start()
     {
@@ -58,10 +64,8 @@ public class SistemaMensajes : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (yaEntroADiscord) return;
 
         yaEntroADiscord = true;
-        StartCoroutine(VibrarCelular(() =>
-        {
-            StartCoroutine(EsperarYActivarOpciones(20f));
-        }));
+
+        StartCoroutine(EsperarYVibrarYMostrarNotificacion(20f));
     }
 
     IEnumerator VibrarCelular(System.Action onComplete)
@@ -116,6 +120,12 @@ public class SistemaMensajes : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         yield return new WaitForSeconds(segundos);
         if (imagenConBotones != null)
             imagenConBotones.SetActive(true);
+
+        // Ocultar íconos de notificación al abrir el mensaje
+        if (iconoNotificacionCelular != null)
+            iconoNotificacionCelular.SetActive(false);
+        if (iconoNotificacionMiniCelular != null)
+            iconoNotificacionMiniCelular.SetActive(false);
     }
 
     public void OpcionSeleccionada()
@@ -172,13 +182,11 @@ public class SistemaMensajes : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         if (indiceSiguienteEscena >= 0)
         {
-            // Usar índice de escena
-            SceneManager.LoadScene("Nivel2");
+            SceneManager.LoadScene(indiceSiguienteEscena);
         }
-        else if (!string.IsNullOrEmpty("Nivel3"))
+        else if (!string.IsNullOrEmpty(nombreSiguienteEscena))
         {
-            // Usar nombre de escena
-            SceneManager.LoadScene("Nivel4");
+            SceneManager.LoadScene(nombreSiguienteEscena);
         }
         else
         {
@@ -243,5 +251,23 @@ public class SistemaMensajes : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             miniCelular.transform.position = posicionInicialMiniCelular;
         if (sombraCelular != null)
             sombraCelular.transform.position = posicionInicialSombra;
+    }
+    IEnumerator EsperarYVibrarYMostrarNotificacion(float segundos)
+    {
+        yield return new WaitForSeconds(segundos);
+
+        yield return VibrarCelular(() =>
+        {
+            if (audioSource != null && sonidoNotificacion != null)
+                audioSource.PlayOneShot(sonidoNotificacion);
+
+            if (iconoNotificacionCelular != null)
+                iconoNotificacionCelular.SetActive(true);
+            if (iconoNotificacionMiniCelular != null)
+                iconoNotificacionMiniCelular.SetActive(true);
+
+            // ✅ Activar las opciones al final
+            StartCoroutine(EsperarYActivarOpciones(0f));
+        });
     }
 }
