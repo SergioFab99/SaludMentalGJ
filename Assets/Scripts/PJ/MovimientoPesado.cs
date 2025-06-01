@@ -85,15 +85,7 @@ public class MovimientoPesado : MonoBehaviour
 
         if (movX != 0f || movZ != 0f)
         {
-            if (primerIntento)
-            {
-                primerIntento = false;
-                if (pensamientosTristes != null)
-                {
-                    pensamientosTristes.MostrarPensamiento("¿Realmente tengo que moverme?");
-                }
-                return; // Bloquea movimiento la primera vez
-            }
+           
 
             controlador.Move(direccion * Time.deltaTime);
 

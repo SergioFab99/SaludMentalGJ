@@ -3983,8 +3983,8 @@ MonoBehaviour:
   textoBotonNegativo: {fileID: 868756971}
   textoPositivo: Haz que se tome un respiro fuera de su cuarto
   textoNegativo: "Haz que se a\xEDsle m\xE1s"
-  respuestaPositiva: "A\xFAn no me siento lista, quiz\xE1s otro d\xEDa."
-  respuestaNegativa: "Me siento m\xE1s atrapado que antes."
+  respuestaPositiva: "Elegiste algo positivo. \xA1Mejoraste tu \xE1nimo!"
+  respuestaNegativa: "Elegiste algo negativo. Tu \xE1nimo baj\xF3."
   barraEmocional: {fileID: 844604242}
 --- !u!1 &609084188
 GameObject:
@@ -4922,7 +4922,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b38862b9f2abfc46a1e02980bf5a2ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pensamientos: {fileID: 844604240}
+  pensamientos: {fileID: 0}
   indicadorE: {fileID: 1124751041}
   panelOpciones: {fileID: 282447022}
   botonPositivo: {fileID: 1652556404}
@@ -4931,8 +4931,8 @@ MonoBehaviour:
   textoBotonNegativo: {fileID: 868756971}
   textoPositivo: "Inv\xEDtalo a expresar lo que siente"
   textoNegativo: "D\xE9jalo sin materiales"
-  respuestaPositiva: Expresar lo que llevo dentro calma mi mente.
-  respuestaNegativa: "No puedo sacar lo que siento y me duele m\xE1s."
+  respuestaPositiva: "Elegiste algo positivo. \xA1Mejoraste tu \xE1nimo!"
+  respuestaNegativa: "Elegiste algo negativo. Tu \xE1nimo baj\xF3."
   barraEmocional: {fileID: 844604242}
 --- !u!1 &703391280
 GameObject:
@@ -7905,13 +7905,13 @@ MonoBehaviour:
   panelOpciones: {fileID: 282447022}
   botonPositivo: {fileID: 1652556404}
   botonNegativo: {fileID: 1222779034}
-  textoBotonPositivo: {fileID: 872616507}
-  textoBotonNegativo: {fileID: 868756971}
+  textoBotonPositivo: {fileID: 0}
+  textoBotonNegativo: {fileID: 0}
   textoPositivo: Dale tiempo para divertirse.
   textoNegativo: "Proh\xEDbele jugar."
-  respuestaPositiva: "Gracias por dejarme un tiempo para m\xED."
-  respuestaNegativa: "Sin esto, la tristeza pesa m\xE1s."
-  barraEmocional: {fileID: 844604242}
+  respuestaPositiva: "Elegiste algo positivo. \xA1Mejoraste tu \xE1nimo!"
+  respuestaNegativa: "Elegiste algo negativo. Tu \xE1nimo baj\xF3."
+  barraEmocional: {fileID: 0}
 --- !u!1 &1118167819 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3753141208637795326, guid: b557d21df1eb8ff4abf044f532b51a57,
@@ -11184,8 +11184,8 @@ MonoBehaviour:
   textoBotonNegativo: {fileID: 868756971}
   textoPositivo: "Toma un respiro y refr\xE9scate."
   textoNegativo: "No te ba\xF1es."
-  respuestaPositiva: "Est\xE1 bien, un peque\xF1o esfuerzo no est\xE1 mal."
-  respuestaNegativa: "Supongo que est\xE1 bien dejarlo pasar una vez."
+  respuestaPositiva: "Elegiste algo positivo. \xA1Mejoraste tu \xE1nimo!"
+  respuestaNegativa: "Elegiste algo negativo. Tu \xE1nimo baj\xF3."
   barraEmocional: {fileID: 844604242}
 --- !u!1 &1652556402
 GameObject:
