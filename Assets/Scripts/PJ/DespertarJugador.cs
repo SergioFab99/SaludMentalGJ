@@ -4,42 +4,66 @@ using System.Collections;
 
 public class DespertarInteractivo : MonoBehaviour
 {
+    [Header("Referencias de interfaz")]
     public RectTransform topLid;
     public RectTransform bottomLid;
     public Button wakeButton;
+    public GameObject canvasInicio;
+    public GameObject canvasDespertar;// ?? Canvas inicial (pantalla negra, texto, etc.)
 
+    [Header("Configuración")]
     public int clicksToWakeUp = 3;
-    public int currentClicks = 0;
-
     public float openSpeed = 300f;
+
+    [Header("Referencias externas")]
+    public PensamientosTristes pensamientosTristes;
+
+    private int currentClicks = 0;
     private bool isAwake = false;
 
     private Vector2 topClosedPos;
     private Vector2 bottomClosedPos;
     private Vector2 topOpenPos;
     private Vector2 bottomOpenPos;
-    public PensamientosTristes pensamientosTristes;
+
     void Start()
     {
+        // Desactiva el canvas de despertar al inicio
+        if (canvasDespertar != null)
+            canvasDespertar.SetActive(false);
+
+        if (canvasInicio != null)
+            canvasInicio.SetActive(true);
+
+        StartCoroutine(IniciarDespuesDeRetraso(2f));
+    }
+    IEnumerator IniciarDespuesDeRetraso(float segundos)
+    {
+        yield return new WaitForSeconds(segundos);
+
+        if (canvasInicio != null)
+            canvasInicio.SetActive(false);
+
+        if (canvasDespertar != null)
+            canvasDespertar.SetActive(true);
+
+        // Ahora sí: iniciar lo de siempre
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        // Posiciones iniciales
+        // Posiciones de párpados
         topClosedPos = topLid.anchoredPosition;
         bottomClosedPos = bottomLid.anchoredPosition;
 
         float screenHeight = Screen.height;
-
         topOpenPos = new Vector2(topClosedPos.x, topClosedPos.y + screenHeight);
         bottomOpenPos = new Vector2(bottomClosedPos.x, bottomClosedPos.y - screenHeight);
 
         wakeButton.gameObject.SetActive(false);
         wakeButton.onClick.AddListener(OnWakeButtonClick);
 
-        // Mostrar botón luego de 3 segundos
         StartCoroutine(ShowWakeButtonAfterDelay(3f));
     }
-
     public void OnWakeButtonClick()
     {
         Debug.Log("Click detectado en el botón");
@@ -53,23 +77,20 @@ public class DespertarInteractivo : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
-            // Lanzamos la corrutina que primero abre los ojos y luego muestra el pensamiento
             StartCoroutine(AbrirOjosYMostrarPensamiento());
         }
         else
         {
-            StartCoroutine(ShakeAndHideButton()); // nueva animación
+            StartCoroutine(ShakeAndHideButton());
             StartCoroutine(ShowWakeButtonAfterDelay(0.5f));
         }
     }
+
     IEnumerator ShakeAndHideButton()
     {
-        // Cambia color a rojo
         wakeButton.image.color = Color.red;
-
         Vector3 originalPos = wakeButton.transform.localPosition;
 
-        // Sacudida simple por 0.3s
         float duration = 0.3f;
         float strength = 10f;
         float time = 0f;
@@ -85,21 +106,18 @@ public class DespertarInteractivo : MonoBehaviour
             yield return null;
         }
 
-        // Reset posición y color
         wakeButton.transform.localPosition = originalPos;
         wakeButton.image.color = Color.white;
 
         wakeButton.gameObject.SetActive(false);
     }
+
     private IEnumerator AbrirOjosYMostrarPensamiento()
     {
-        // Esperar a que termine la animación de abrir ojos
         yield return StartCoroutine(OpenEyes());
 
-        // Esperar 3 segundos más
         yield return new WaitForSeconds(0.5f);
 
-        // Mostrar el pensamiento
         if (pensamientosTristes != null)
         {
             pensamientosTristes.MostrarPensamiento("¿Por qué me levanté? ¿Qué sentido tiene...?");
@@ -128,7 +146,6 @@ public class DespertarInteractivo : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            // Reubicar el botón a posición aleatoria en pantalla
             Vector2 randomPos = new Vector2(
                 Random.Range(100f, Screen.width - 100f),
                 Random.Range(100f, Screen.height - 100f)
@@ -143,5 +160,4 @@ public class DespertarInteractivo : MonoBehaviour
             wakeButton.gameObject.SetActive(true);
         }
     }
-   
 }

@@ -1,32 +1,56 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using System.Collections;
 
 public class SistemaMensajes : MonoBehaviour
 {
     [Header("Referencias")]
-    public GameObject panelOpciones;
-    public GameObject celular;
-    public GameObject canvasTransicion; // Canvas negro para parpadeo
-    public GameObject personaje;
-    public GameObject textoDialogo; // Texto que se desactiva en la transición
+    public GameObject celular;                     // Celular completo
+    public GameObject imagenConBotones;            // Segunda imagen (que aparece tras 20s)
+    public GameObject canvasTransicion;            // Canvas negro para parpadeo/flashback
+    public GameObject personaje;                   // Personaje a mover
+    public GameObject textoDialogo;                // Texto que se desactiva durante transición
 
-    public Transform[] puntosFlashback; // Puntos donde el personaje aparecerá
+    public Transform[] puntosFlashback;            // Puntos del "flashback"
     public float duracionParpadeo = 5f;
     public float intervaloParpadeo = 0.2f;
 
+    private bool yaEntroADiscord = false;
     private bool accionEjecutada = false;
     private Quaternion rotacionCamaraOriginal;
 
+    // Vincula este al botón de Discord
+    public void OnDiscordClick()
+    {
+        if (yaEntroADiscord) return;
+
+        yaEntroADiscord = true;
+
+        // Comenzar cuenta regresiva de 20s
+        StartCoroutine(EsperarYActivarOpciones(20f));
+    }
+
+    IEnumerator EsperarYActivarOpciones(float segundos)
+    {
+        yield return new WaitForSeconds(segundos);
+
+        if (imagenConBotones != null)
+            imagenConBotones.SetActive(true);
+    }
+
+    // Vincula esto a los botones de opciones (una sola función para todos)
     public void OpcionSeleccionada()
     {
         if (accionEjecutada) return;
+
         accionEjecutada = true;
 
-        panelOpciones.SetActive(false);
-        celular.SetActive(false);
+        // Desactivar celular, botones y texto
+        if (celular != null) celular.SetActive(false);
+        if (imagenConBotones != null) imagenConBotones.SetActive(false);
+        if (textoDialogo != null) textoDialogo.SetActive(false);
 
+        // Iniciar transición con parpadeo
         StartCoroutine(FlashbackConParpadeo());
     }
 
@@ -40,23 +64,19 @@ public class SistemaMensajes : MonoBehaviour
         if (camara != null)
             rotacionCamaraOriginal = camara.transform.rotation;
 
-        // Desactivar texto si está activo
-        if (textoDialogo != null)
-            textoDialogo.SetActive(false);
+        // Activar canvas de transición
+        if (canvasTransicion != null)
+            canvasTransicion.SetActive(true);
 
-        // Asegurar que el canvas esté activo para iniciar
-        canvasTransicion.SetActive(true);
-
+        // Parpadeo y movimiento del personaje
         while (tiempoTranscurrido < duracionParpadeo)
         {
-            // Fijar rotación de la cámara hacia adelante
             if (camara != null)
                 camara.transform.rotation = rotacionCamaraOriginal;
 
-            // Alternar visibilidad para parpadeo
-            canvasTransicion.SetActive(!canvasTransicion.activeSelf);
+            if (canvasTransicion != null)
+                canvasTransicion.SetActive(!canvasTransicion.activeSelf); // on/off
 
-            // Mover al personaje si el canvas está activo
             if (canvasTransicion.activeSelf && puntosFlashback.Length > 0)
             {
                 personaje.transform.position = puntosFlashback[indicePosicion].position;
@@ -67,12 +87,13 @@ public class SistemaMensajes : MonoBehaviour
             tiempoTranscurrido += intervaloParpadeo;
         }
 
-        // Al final, asegurar que el canvas quede activo
-        canvasTransicion.SetActive(true);
-
-        // Si quieres volver a activar el texto o continuar historia, hazlo aquí
-        // textoDialogo.SetActive(true); (si lo deseas más adelante)
+        // Dejar canvas negro activo al final (si quieres, puedes ocultarlo aquí también)
+        if (canvasTransicion != null)
+            canvasTransicion.SetActive(true);
 
         accionEjecutada = false;
+
+        // Aquí puedes continuar la historia, mostrar diálogo, etc.
+        // textoDialogo.SetActive(true);
     }
 }
